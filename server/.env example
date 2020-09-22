@@ -1,0 +1,7 @@
+PORT = 3333
+
+NODE_ENV = development
+
+DATABASE_URL = mongodb_URI
+
+CORS_ORIGIN = http://localhost:3000
