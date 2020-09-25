@@ -4,7 +4,7 @@ import { createLogEntries } from './API';
 
 const EntryForm = ({ location, onClose }) => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
@@ -12,20 +12,18 @@ const EntryForm = ({ location, onClose }) => {
       setLoading(true);
       data.latitude = location.latitude;
       data.longitude = location.longitude;
-      const created = await createLogEntries(data);
-      console.log(created);
+      await createLogEntries(data);
+      onClose();
     } catch (error) {
       console.error(error);
-      onClose();
       setError(error.message);
       setLoading(false);
     }
-  }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="entry-form">
       { error ? <h3 className="error">{error}</h3> : null}
-      {/* <label htmlFor="apiKey">API KEY</label>
-      <input type="password" name="apiKey" required ref={register} /> */}
       <label htmlFor="title">Title</label>
       <input name="title" required ref={register} />
       <label htmlFor="comments">Comments</label>
@@ -36,7 +34,7 @@ const EntryForm = ({ location, onClose }) => {
       <input name="image" ref={register} />
       <label htmlFor="visitDate">Visit Date</label>
       <input name="visitDate" type="date" required ref={register} />
-      <button disabled={loading}>{loading ? 'Loading...' : 'Log Entry'}</button>
+      <button disabled={loading}>{loading ? 'Loading...' : 'Log your Entry'}</button>
     </form>
   );
 }
