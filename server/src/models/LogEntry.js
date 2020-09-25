@@ -17,9 +17,9 @@ const logEntrySchema = Schema({
   image: String,
   rating: {
     type: Number,
-    min: 0,
+    min: 1,
     max: 10,
-    default: 0,
+    default: 1,
   },
   latitude: {
     ...requiredNumber,
