@@ -17,12 +17,16 @@ const App = () => {
     zoom: 3,
   });
 
-  useEffect(() => {
+  const getEntries = async () => {
     (async () => {
       const logEntries = await listLogEntries();
       console.log(logEntries);
       setLogEntries(logEntries);
     })();
+  }
+
+  useEffect(() => {
+    getEntries();
   }, []);
 
   const showAddNewEntry = (event) => {
@@ -37,7 +41,7 @@ const App = () => {
     <ReactMapGL
       {...viewport}
       mapStyle="mapbox://styles/thecjreynolds/ck117fnjy0ff61cnsclwimyay"
-      mapboxApiAccessToken={process.env.MAPBOX_ACCESS_TOKEN}
+      mapboxApiAccessToken={process.env.MAPBOX_TOKEN}
       onViewportChange={(nextViewport) => setViewport(nextViewport)}
       onDblClick={showAddNewEntry}
     >
@@ -139,7 +143,12 @@ const App = () => {
             anchor="top"
           >
             <div className="popup">
-              <EntryForm />
+              <EntryForm
+                onClose={() => {
+                  setAddEntry(null);
+                  getEntries();
+                }}
+                location={addEntry} />
             </div>
           </Popup>
         </React.Fragment>
@@ -148,4 +157,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App
